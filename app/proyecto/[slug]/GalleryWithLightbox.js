@@ -25,7 +25,7 @@ export default function StoryBlock({ story, title }) {
         {story.map((block, i) => {
           if (block.type === 'text') {
             return (
-              <div key={i} className="container-narrow">
+              <div key={i} className="story-block">
                 <div className="story-text">
                   <p>{block.content}</p>
                 </div>
@@ -37,25 +37,30 @@ export default function StoryBlock({ story, title }) {
             const photos = block.items;
             const isFirst = i === story.findIndex(b => b.type === 'photos');
 
-            // Primera foto del proyecto: portada ancho completo
             if (isFirst) {
               return (
                 <div key={i}>
-                  <img
-                    src={photos[0].url}
-                    alt={title}
-                    className="story-cover"
-                    onClick={() => openLightbox(photos, 0)}
-                  />
+                  <div className="story-cover-wrap">
+                    <img
+                      src={photos[0].url}
+                      alt={title}
+                      className="story-cover"
+                      onClick={() => openLightbox(photos, 0)}
+                    />
+                  </div>
                   {photos.length > 1 && (
-                    <PhotoGrid photos={photos.slice(1)} title={title} onOpen={(idx) => openLightbox(photos, idx + 1)} />
+                    <div className="story-block">
+                      <PhotoGrid photos={photos.slice(1)} title={title} onOpen={(idx) => openLightbox(photos, idx + 1)} />
+                    </div>
                   )}
                 </div>
               );
             }
 
             return (
-              <PhotoGrid key={i} photos={photos} title={title} onOpen={(idx) => openLightbox(photos, idx)} />
+              <div key={i} className="story-block">
+                <PhotoGrid photos={photos} title={title} onOpen={(idx) => openLightbox(photos, idx)} />
+              </div>
             );
           }
 
