@@ -24,6 +24,9 @@ export default function StoryBlock({ story, title }) {
       <div className="story">
         {story.map((block, i) => {
           if (block.type === 'text') {
+            if (block.content === '---') {
+              return <div key={i} className="story-spacer" />;
+            }
             return (
               <div key={i} className="story-block">
                 <div className="story-text">

@@ -64,17 +64,20 @@ img { display: block; max-width: 100%; }
 .story { margin-bottom: 100px; }
 .story-block { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
 
-/* Portada - foto de apertura, ancho completo pero con max-width */
+/* Portada - foto de apertura, muestra imagen entera sin recortar */
 .story-cover-wrap { max-width: 1400px; margin: 0 auto; }
-.story-cover { width: 100%; max-height: 92vh; object-fit: cover; object-position: center; display: block; }
+.story-cover { width: 100%; height: auto; display: block; }
 
 /* Bloque de texto editorial */
 .story-text { padding: 72px 0; }
 .story-text p { font-family: var(--serif); font-size: clamp(18px, 2.2vw, 26px); font-weight: 400; line-height: 1.65; color: var(--fg); max-width: 640px; margin: 0 auto; text-align: center; }
 
-/* 1 foto sola */
+/* Espaciador — cuando el txt contiene solo "---" */
+.story-spacer { height: 60px; }
+
+/* 1 foto sola - ancho completo de la página */
 .story-photo-single { padding: 12px 0; }
-.story-photo-single img { width: 100%; max-height: 88vh; object-fit: cover; }
+.story-photo-single img { width: 100%; height: auto; display: block; }
 
 /* 2 fotos lado a lado */
 .story-photos-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px 0; }
