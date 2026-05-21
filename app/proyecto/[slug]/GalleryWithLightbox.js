@@ -1,43 +1,112 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function GalleryWithLightbox({ photos, title }) {
-  const [selected, setSelected] = useState(null);
+export default function StoryBlock({ story, title }) {
+  const [lightbox, setLightbox] = useState(null); // { photos, index }
 
-  // Con 1 sola foto: ancho completo. Con 2+: masonry 2 columnas
-  const isSingle = photos.length === 1;
+  // Teclado: ESC para cerrar, flechas para navegar
+  useEffect(() => {
+    const handler = (e) => {
+      if (!lightbox) return;
+      if (e.key === 'Escape') setLightbox(null);
+      if (e.key === 'ArrowRight') setLightbox(l => ({ ...l, index: (l.index + 1) % l.photos.length }));
+      if (e.key === 'ArrowLeft') setLightbox(l => ({ ...l, index: (l.index - 1 + l.photos.length) % l.photos.length }));
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [lightbox]);
+
+  const openLightbox = (photos, index) => setLightbox({ photos, index });
 
   return (
     <>
-      <div className="container">
-        <div
-          className="photo-gallery"
-          style={isSingle ? { columns: 1 } : {}}
-        >
-          {photos.map(photo => (
-            <img
-              key={photo.id}
-              src={photo.url}
-              alt={`${title} - ${photo.name}`}
-              loading="lazy"
-              onClick={() => setSelected(photo)}
-              style={{ cursor: 'zoom-in' }}
-            />
-          ))}
-        </div>
+      <div className="story">
+        {story.map((block, i) => {
+          if (block.type === 'text') {
+            return (
+              <div key={i} className="container-narrow">
+                <div className="story-text">
+                  <p>{block.content}</p>
+                </div>
+              </div>
+            );
+          }
+
+          if (block.type === 'photos') {
+            const photos = block.items;
+            const isFirst = i === story.findIndex(b => b.type === 'photos');
+
+            // Primera foto del proyecto: portada ancho completo
+            if (isFirst) {
+              return (
+                <div key={i}>
+                  <img
+                    src={photos[0].url}
+                    alt={title}
+                    className="story-cover"
+                    onClick={() => openLightbox(photos, 0)}
+                  />
+                  {photos.length > 1 && (
+                    <PhotoGrid photos={photos.slice(1)} title={title} onOpen={(idx) => openLightbox(photos, idx + 1)} />
+                  )}
+                </div>
+              );
+            }
+
+            return (
+              <PhotoGrid key={i} photos={photos} title={title} onOpen={(idx) => openLightbox(photos, idx)} />
+            );
+          }
+
+          return null;
+        })}
       </div>
 
-      {selected && (
-        <div className="lightbox" onClick={() => setSelected(null)}>
-          <span className="lightbox-close" onClick={() => setSelected(null)}>×</span>
+      {lightbox && (
+        <div className="lightbox" onClick={() => setLightbox(null)}>
+          <span className="lightbox-close" onClick={() => setLightbox(null)}>×</span>
+          {lightbox.photos.length > 1 && (
+            <>
+              <span className="lightbox-nav prev" onClick={e => { e.stopPropagation(); setLightbox(l => ({ ...l, index: (l.index - 1 + l.photos.length) % l.photos.length })); }}>‹</span>
+              <span className="lightbox-nav next" onClick={e => { e.stopPropagation(); setLightbox(l => ({ ...l, index: (l.index + 1) % l.photos.length })); }}>›</span>
+            </>
+          )}
           <img
-            src={selected.url}
+            src={lightbox.photos[lightbox.index].url}
             alt={title}
             onClick={e => e.stopPropagation()}
           />
         </div>
       )}
     </>
+  );
+}
+
+function PhotoGrid({ photos, title, onOpen }) {
+  const n = photos.length;
+
+  if (n === 1) return (
+    <div className="story-photo-single">
+      <img src={photos[0].url} alt={title} loading="lazy" onClick={() => onOpen(0)} />
+    </div>
+  );
+
+  if (n === 2) return (
+    <div className="story-photos-duo">
+      {photos.map((p, i) => <img key={p.id} src={p.url} alt={title} loading="lazy" onClick={() => onOpen(i)} />)}
+    </div>
+  );
+
+  if (n === 3) return (
+    <div className="story-photos-trio">
+      {photos.map((p, i) => <img key={p.id} src={p.url} alt={title} loading="lazy" onClick={() => onOpen(i)} />)}
+    </div>
+  );
+
+  return (
+    <div className="story-photos-many">
+      {photos.map((p, i) => <img key={p.id} src={p.url} alt={title} loading="lazy" onClick={() => onOpen(i)} />)}
+    </div>
   );
 }
