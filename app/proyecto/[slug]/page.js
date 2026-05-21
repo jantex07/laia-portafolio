@@ -32,7 +32,7 @@ export default async function ProjectPage({ params }) {
 
   return (
     <>
-      <header>
+      <header className="nav-wrap">
         <div className="container">
           <nav className="nav">
             <Link href="/" className="nav-logo">Laia Fornaguera</Link>
@@ -48,11 +48,11 @@ export default async function ProjectPage({ params }) {
       <main>
         <div className="container-narrow">
           <div className="project-header">
-            <Link href="/" className="back-link">← Tots els projectes</Link>
+            <Link href="/" className="back-link">Tots els projectes</Link>
             <div className="project-meta">
               {project.categoria && <span className="project-cat-badge">{project.categoria}</span>}
               {project.lloc && <span className="project-lloc">{project.lloc}</span>}
-              {project.data && <span className="project-lloc">{project.data}</span>}
+              {project.data && <span className="project-lloc">·&nbsp;{project.data}</span>}
             </div>
             <h1 className="project-title">{project.titulo}</h1>
             {project.descripcio && <p className="project-desc">{project.descripcio}</p>}
@@ -62,11 +62,11 @@ export default async function ProjectPage({ params }) {
         <StoryBlock story={project.story} title={project.titulo} />
       </main>
 
-      <footer>
+      <footer className="footer-wrap" id="contacte">
         <div className="container">
           <div className="footer">
-            <p>© {new Date().getFullYear()} Laia Fornaguera · Costa Brava</p>
-            <p id="contacte"><a href="mailto:hola@laiafornaguera.com" style={{color:'var(--muted)'}}>hola@laiafornaguera.com</a></p>
+            <p>© {new Date().getFullYear()} Laia Fornaguera</p>
+            <p><a href="mailto:hola@laiafornaguera.com" style={{color:'var(--muted)'}}>hola@laiafornaguera.com</a></p>
           </div>
         </div>
       </footer>

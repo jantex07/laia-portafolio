@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-// Categorías disponibles — añade las que quieras aquí
 const CATEGORIES = ['Tots', 'Bodas', 'Embaràs', 'Parelles', 'Família'];
 
 export default function HomePage() {
@@ -14,22 +13,17 @@ export default function HomePage() {
   useEffect(() => {
     fetch('/api/projects')
       .then(r => r.json())
-      .then(data => {
-        setProjects(data);
-        setLoading(false);
-      })
+      .then(data => { setProjects(data); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
 
   const filtered = active === 'Tots'
     ? projects
-    : projects.filter(p =>
-        p.categoria?.toLowerCase() === active.toLowerCase()
-      );
+    : projects.filter(p => p.categoria?.toLowerCase() === active.toLowerCase());
 
   return (
     <>
-      <header>
+      <header className="nav-wrap">
         <div className="container">
           <nav className="nav">
             <span className="nav-logo">Laia Fornaguera</span>
@@ -45,29 +39,49 @@ export default function HomePage() {
       <main>
         <div className="container">
           <section className="hero">
-            <h1>Fotografia natural<br />a la Costa Brava</h1>
-            <p>
-              Bodas, sessions d'embaràs i parelles. Fotografia sensible,
-              sense posats i amb llum natural.
+            <div className="hero-eyebrow">Costa Brava · Fotògrafa</div>
+            <h1>
+              Fotografia <em>natural</em><br />
+              i sensible
+            </h1>
+            <p className="hero-sub">
+              Bodas, sessions d'embaràs i parelles.<br />
+              Sense posats, amb llum natural.
             </p>
+            <div className="hero-stats">
+              <div>
+                <div className="hero-stat-num">+100</div>
+                <div className="hero-stat-label">Històries felices</div>
+              </div>
+              <div>
+                <div className="hero-stat-num">10</div>
+                <div className="hero-stat-label">Anys d'experiència</div>
+              </div>
+              <div>
+                <div className="hero-stat-num">∞</div>
+                <div className="hero-stat-label">Moments únics</div>
+              </div>
+            </div>
           </section>
+        </div>
 
-          <div className="filters">
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat}
-                className={`filter-btn${active === cat ? ' active' : ''}`}
-                onClick={() => setActive(cat)}
-              >
-                {cat}
-              </button>
-            ))}
+        <div className="container">
+          <div className="filters-wrap">
+            <div className="filters">
+              {CATEGORIES.map(cat => (
+                <button
+                  key={cat}
+                  className={`filter-btn${active === cat ? ' active' : ''}`}
+                  onClick={() => setActive(cat)}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
 
           {loading && (
-            <div className="empty-state">
-              <p>Carregant projectes...</p>
-            </div>
+            <div className="empty-state"><p>Carregant projectes...</p></div>
           )}
 
           {!loading && filtered.length === 0 && (
@@ -80,34 +94,14 @@ export default function HomePage() {
           {!loading && filtered.length > 0 && (
             <div className="projects-grid">
               {filtered.map(project => (
-                <Link
-                  key={project.slug}
-                  href={`/proyecto/${project.slug}`}
-                  className="project-card"
-                >
+                <Link key={project.slug} href={`/proyecto/${project.slug}`} className="project-card">
                   {project.portada ? (
-                    <img
-                      src={project.portada.thumb}
-                      alt={project.titulo}
-                      loading="lazy"
-                    />
+                    <img className="project-card-img" src={project.portada.thumb} alt={project.titulo} loading="lazy" />
                   ) : (
-                    <div style={{
-                      width: '100%',
-                      height: '100%',
-                      background: '#E8E4DE',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '40px'
-                    }}>
-                      📷
-                    </div>
+                    <div style={{ width:'100%', aspectRatio:'3/4', background:'var(--border)' }} />
                   )}
-                  <div className="project-card-overlay">
-                    {project.categoria && (
-                      <div className="project-card-cat">{project.categoria}</div>
-                    )}
+                  <div className="project-card-info">
+                    {project.categoria && <div className="project-card-cat">{project.categoria}</div>}
                     <div className="project-card-title">{project.titulo}</div>
                   </div>
                 </Link>
@@ -117,15 +111,11 @@ export default function HomePage() {
         </div>
       </main>
 
-      <footer>
+      <footer className="footer-wrap" id="contacte">
         <div className="container">
           <div className="footer">
-            <p>© {new Date().getFullYear()} Laia Fornaguera · Costa Brava</p>
-            <p id="contacte">
-              <a href="mailto:hola@laiafornaguera.com" style={{ color: 'var(--muted)' }}>
-                hola@laiafornaguera.com
-              </a>
-            </p>
+            <p>© {new Date().getFullYear()} Laia Fornaguera</p>
+            <p><a href="mailto:hola@laiafornaguera.com">hola@laiafornaguera.com</a></p>
           </div>
         </div>
       </footer>
