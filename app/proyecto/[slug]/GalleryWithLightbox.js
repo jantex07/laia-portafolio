@@ -5,10 +5,16 @@ import { useState } from 'react';
 export default function GalleryWithLightbox({ photos, title }) {
   const [selected, setSelected] = useState(null);
 
+  // Con 1 sola foto: ancho completo. Con 2+: masonry 2 columnas
+  const isSingle = photos.length === 1;
+
   return (
     <>
       <div className="container">
-        <div className="photo-gallery">
+        <div
+          className="photo-gallery"
+          style={isSingle ? { columns: 1 } : {}}
+        >
           {photos.map(photo => (
             <img
               key={photo.id}
