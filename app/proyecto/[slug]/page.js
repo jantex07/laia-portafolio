@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getProjectBySlug, getProjects } from '@/lib/drive';
 import { notFound } from 'next/navigation';
+import GalleryWithLightbox from './GalleryWithLightbox';
 
 export const revalidate = 60;
 
@@ -89,18 +90,7 @@ export default async function ProjectPage({ params }) {
 
         {/* Galeria de fotos */}
         {rest.length > 0 && (
-          <div className="container">
-            <div className="photo-gallery" style={{ marginTop: '4px' }}>
-              {rest.map(photo => (
-                <img
-                  key={photo.id}
-                  src={photo.url}
-                  alt={`${project.titulo} - ${photo.name}`}
-                  loading="lazy"
-                />
-              ))}
-            </div>
-          </div>
+          <GalleryWithLightbox photos={rest} title={project.titulo} />
         )}
       </main>
 
