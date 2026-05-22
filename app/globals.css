@@ -133,7 +133,7 @@ img { display: block; max-width: 100%; }
 .project-card { display: block; position: relative; overflow: hidden; background: var(--border); }
 .project-card-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .project-card:hover .project-card-img { transform: scale(1.04); }
-.project-card-info { padding: 16px 0 32px; }
+.project-card-info { padding: 16px 4px 32px; }
 .project-card-cat {
   font-family: var(--sans);
   font-size: 9px;
