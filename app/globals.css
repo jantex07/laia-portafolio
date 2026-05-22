@@ -286,3 +286,198 @@ img { display: block; max-width: 100%; }
   .hero { padding: 64px 0 56px; }
   .hero-stats { flex-wrap: wrap; gap: 24px; }
 }
+
+/* ── SOBRE MI ─────────────────────────────────── */
+.sobre-wrap { padding: 72px 0 120px; }
+
+.sobre-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
+.sobre-foto-wrap { position: relative; }
+.sobre-foto { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+
+.sobre-title {
+  font-family: var(--serif);
+  font-size: clamp(36px, 4.5vw, 64px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 28px;
+}
+.sobre-title em { font-style: italic; }
+
+.sobre-text-intro {
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+}
+
+.sobre-text-block {
+  max-width: 640px;
+  margin: 0 auto 48px;
+  padding: 0 40px;
+  text-align: center;
+}
+.sobre-text-block p {
+  font-family: var(--serif);
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--fg);
+}
+
+.sobre-fotos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  margin-top: 72px;
+}
+.sobre-fotos-grid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+/* ── CONTACTE ─────────────────────────────────── */
+.contacte-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: start;
+  padding: 72px 0 120px;
+}
+
+.contacte-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 48px;
+  border-top: 1px solid var(--border);
+}
+
+.contacte-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--fg);
+  transition: opacity 0.2s;
+  letter-spacing: 0.02em;
+}
+.contacte-link:hover { opacity: 0.6; }
+.contacte-link-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.contacte-foto {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  margin-bottom: 40px;
+}
+
+/* ── FORMULARI ────────────────────────────────── */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field label {
+  font-family: var(--sans);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--fg);
+  outline: none;
+  resize: none;
+  transition: border-color 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: var(--fg);
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: var(--muted);
+}
+
+.form-submit {
+  align-self: flex-start;
+  margin-top: 8px;
+  padding: 14px 36px;
+  background: var(--fg);
+  color: var(--bg);
+  border: none;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.form-submit:hover { opacity: 0.75; }
+.form-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.form-success {
+  text-align: center;
+  padding: 60px 20px;
+}
+.form-success-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+  color: var(--fg);
+}
+.form-success p {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 300;
+  margin-bottom: 8px;
+}
+.form-success span {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ── RESPONSIVE SOBRE / CONTACTE ─────────────── */
+@media (max-width: 768px) {
+  .sobre-hero { grid-template-columns: 1fr; gap: 40px; }
+  .contacte-wrap { grid-template-columns: 1fr; gap: 56px; }
+  .sobre-fotos-grid { grid-template-columns: repeat(2, 1fr); }
+}
