@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLang, LangSwitcher } from './LanguageContext';
+import MobileMenu from './components/MobileMenu';
 
 export default function HomePage() {
   const { locale, tr } = useLang();
@@ -37,7 +38,10 @@ export default function HomePage() {
               <li><Link href="/sobre-mi">{tr.nav.about}</Link></li>
               <li><Link href="/contacte">{tr.nav.contact}</Link></li>
             </ul>
-            <LangSwitcher />
+            <div className="nav-right">
+              <LangSwitcher />
+              <MobileMenu />
+            </div>
           </nav>
         </div>
       </header>
