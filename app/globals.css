@@ -481,3 +481,30 @@ img { display: block; max-width: 100%; }
   .contacte-wrap { grid-template-columns: 1fr; gap: 56px; }
   .sobre-fotos-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── SELECTOR DE IDIOMA ───────────────────────── */
+.lang-switcher {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+.lang-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.lang-btn:hover { color: var(--fg); }
+.lang-btn.active { color: var(--fg); font-weight: 500; }
+.lang-btn + .lang-btn::before {
+  content: '·';
+  margin-right: 8px;
+  color: var(--border);
+}

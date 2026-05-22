@@ -2,22 +2,27 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-
-const CATEGORIES = ['Tots', 'Bodas', 'Embaràs', 'Parelles', 'Família'];
+import { useLang, LangSwitcher } from './LanguageContext';
 
 export default function HomePage() {
+  const { locale, tr } = useLang();
   const [projects, setProjects] = useState([]);
-  const [active, setActive] = useState('Tots');
+  const [active, setActive] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/projects')
+    setActive(tr.filters.categories[0]);
+  }, [locale]);
+
+  useEffect(() => {
+    fetch(`/api/projects?lang=${locale}`)
       .then(r => r.json())
       .then(data => { setProjects(data); setLoading(false); })
       .catch(() => setLoading(false));
-  }, []);
+  }, [locale]);
 
-  const filtered = active === 'Tots'
+  const all = tr.filters.all;
+  const filtered = !active || active === all
     ? projects
     : projects.filter(p => p.categoria?.toLowerCase() === active.toLowerCase());
 
@@ -28,10 +33,11 @@ export default function HomePage() {
           <nav className="nav">
             <span className="nav-logo">Laia Fornaguera</span>
             <ul className="nav-links">
-              <li><a href="/">Projectes</a></li>
-              <li><a href="/sobre-mi">Sobre mi</a></li>
-              <li><a href="#contacte">Contacte</a></li>
+              <li><Link href="/">{tr.nav.projects}</Link></li>
+              <li><Link href="/sobre-mi">{tr.nav.about}</Link></li>
+              <li><Link href="/contacte">{tr.nav.contact}</Link></li>
             </ul>
+            <LangSwitcher />
           </nav>
         </div>
       </header>
@@ -39,27 +45,24 @@ export default function HomePage() {
       <main>
         <div className="container">
           <section className="hero">
-            <div className="hero-eyebrow">Costa Brava · Fotògrafa</div>
+            <div className="hero-eyebrow">{tr.hero.eyebrow}</div>
             <h1>
-              Fotografia <em>natural</em><br />
-              i sensible
+              {tr.hero.title1} <em>{tr.hero.title2}</em><br />
+              {tr.hero.title3}
             </h1>
-            <p className="hero-sub">
-              Bodas, sessions d'embaràs i parelles.<br />
-              Sense posats, amb llum natural.
-            </p>
+            <p className="hero-sub" style={{ whiteSpace: 'pre-line' }}>{tr.hero.sub}</p>
             <div className="hero-stats">
               <div>
-                <div className="hero-stat-num">+100</div>
-                <div className="hero-stat-label">Històries felices</div>
+                <div className="hero-stat-num">{tr.hero.stat1num}</div>
+                <div className="hero-stat-label">{tr.hero.stat1label}</div>
               </div>
               <div>
-                <div className="hero-stat-num">10</div>
-                <div className="hero-stat-label">Anys d'experiència</div>
+                <div className="hero-stat-num">{tr.hero.stat2num}</div>
+                <div className="hero-stat-label">{tr.hero.stat2label}</div>
               </div>
               <div>
-                <div className="hero-stat-num">∞</div>
-                <div className="hero-stat-label">Moments únics</div>
+                <div className="hero-stat-num">{tr.hero.stat3num}</div>
+                <div className="hero-stat-label">{tr.hero.stat3label}</div>
               </div>
             </div>
           </section>
@@ -68,7 +71,7 @@ export default function HomePage() {
         <div className="container">
           <div className="filters-wrap">
             <div className="filters">
-              {CATEGORIES.map(cat => (
+              {tr.filters.categories.map(cat => (
                 <button
                   key={cat}
                   className={`filter-btn${active === cat ? ' active' : ''}`}
@@ -80,26 +83,23 @@ export default function HomePage() {
             </div>
           </div>
 
-          {loading && (
-            <div className="empty-state"><p>Carregant projectes...</p></div>
-          )}
+          {loading && <div className="empty-state"><p>{tr.loading}</p></div>}
 
           {!loading && filtered.length === 0 && (
             <div className="empty-state">
-              <h2>Aviat hi haurà contingut aquí</h2>
-              <p>Afegeix una carpeta a Google Drive per veure el projecte.</p>
+              <h2>{tr.empty.title}</h2>
+              <p>{tr.empty.sub}</p>
             </div>
           )}
 
           {!loading && filtered.length > 0 && (
             <div className="projects-grid">
               {filtered.map(project => (
-                <Link key={project.slug} href={`/proyecto/${project.slug}`} className="project-card">
-                  {project.portada ? (
-                    <img className="project-card-img" src={project.portada.thumb} alt={project.titulo} loading="lazy" />
-                  ) : (
-                    <div style={{ width:'100%', aspectRatio:'3/4', background:'var(--border)' }} />
-                  )}
+                <Link key={project.slug} href={`/proyecto/${project.slug}?lang=${locale}`} className="project-card">
+                  {project.portada
+                    ? <img className="project-card-img" src={project.portada.thumb} alt={project.titulo} loading="lazy" />
+                    : <div style={{ width: '100%', aspectRatio: '3/4', background: 'var(--border)' }} />
+                  }
                   <div className="project-card-info">
                     {project.categoria && <div className="project-card-cat">{project.categoria}</div>}
                     <div className="project-card-title">{project.titulo}</div>
@@ -114,7 +114,7 @@ export default function HomePage() {
       <footer className="footer-wrap" id="contacte">
         <div className="container">
           <div className="footer">
-            <p>© {new Date().getFullYear()} Laia Fornaguera</p>
+            <p>{tr.footer.copy.replace('{year}', new Date().getFullYear())}</p>
             <p><a href="mailto:hola@laiafornaguera.com">hola@laiafornaguera.com</a></p>
           </div>
         </div>
