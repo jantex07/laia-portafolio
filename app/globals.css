@@ -283,6 +283,7 @@ img { display: block; max-width: 100%; }
   .story-photos-trio { grid-template-columns: 1fr; grid-template-rows: auto; }
   .story-photos-trio img:first-child { grid-row: auto; height: auto; }
   .nav-links { display: none; }
+  .lang-switcher { margin-left: auto; }
   .hero { padding: 64px 0 56px; }
   .hero-stats { flex-wrap: wrap; gap: 24px; }
 }
